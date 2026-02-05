@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <audio id="music" preload="auto" playsinline loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
-
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For MY Amreen 💖</title>
+<title>For My Amreen 💖</title>
 
 <style>
-
+/* ——— GENERAL ——— */
 body{
 margin:0;
 background:black;
@@ -19,9 +14,10 @@ font-family:Arial, sans-serif;
 color:white;
 text-align:center;
 overflow:hidden;
+cursor:url('https://cur.cursors-4u.net/cursors/cur-2/cur116.cur'), auto;
 }
 
-/* animated galaxy background */
+/* ——— GALAXY BACKGROUND ——— */
 body::before{
 content:"";
 position:fixed;
@@ -39,7 +35,7 @@ z-index:-2;
 100%{transform:translate(-20%,-20%)}
 }
 
-/* stars */
+/* ——— STARS ——— */
 .star{
 position:fixed;
 width:2px;
@@ -54,7 +50,7 @@ from{opacity:0.2}
 to{opacity:0.9}
 }
 
-/* intro */
+/* ——— INTRO ——— */
 #intro{
 position:fixed;
 width:100%;
@@ -75,7 +71,7 @@ border-radius:14px;
 cursor:pointer;
 }
 
-/* slideshow */
+/* ——— SLIDESHOW ——— */
 .slide{
 position:fixed;
 width:65%;
@@ -87,15 +83,19 @@ opacity:0;
 transition:opacity 2s, transform 8s;
 border-radius:20px;
 box-shadow:0 0 40px rgba(255,45,117,0.5);
+animation:heartbeat 3s infinite;
+}
+
+@keyframes heartbeat{
+0%,100%{transform:translate(-50%,-50%) scale(1)}
+50%{transform:translate(-50%,-50%) scale(1.05)}
 }
 
 .show{
 opacity:0.7;
-transform:translate(-50%,-50%) scale(1.1);
 }
 
-#content{display:none;}
-
+/* ——— LETTER ——— */
 #letter{
 position:absolute;
 top:12%;
@@ -106,6 +106,7 @@ text-shadow:0 0 15px black;
 min-height:120px;
 }
 
+/* ——— BUTTONS ——— */
 #buttons{
 position:absolute;
 bottom:15%;
@@ -115,6 +116,7 @@ width:100%;
 #yesBtn{background:#ff2d75;color:white;}
 #noBtn{background:white;color:black;position:absolute;}
 
+/* ——— YES SCREEN ——— */
 #yesScreen{
 display:none;
 position:fixed;
@@ -127,7 +129,7 @@ color:#ff2d75;
 flex-direction:column;
 }
 
-/* floating hearts */
+/* ——— FLOATING HEARTS ——— */
 .heart{
 position:fixed;
 color:#ff2d75;
@@ -140,6 +142,28 @@ from{transform:translateY(0);opacity:1}
 to{transform:translateY(-600px);opacity:0}
 }
 
+/* ——— CHAOS MODE ——— */
+.shake{
+animation:shake 0.2s infinite;
+}
+
+@keyframes shake{
+0%{transform:translate(0,0)}
+25%{transform:translate(5px,-5px)}
+50%{transform:translate(-5px,5px)}
+75%{transform:translate(5px,5px)}
+100%{transform:translate(-5px,-5px)}
+}
+
+.flash{
+animation:flash 0.3s infinite;
+}
+
+@keyframes flash{
+0%{background:black}
+50%{background:red}
+100%{background:black}
+}
 </style>
 </head>
 
@@ -171,14 +195,12 @@ to{transform:translateY(-600px);opacity:0}
 </div>
 
 <div id="yesScreen">
-<div>OMGGGG NO WA YOU SAY YES!!
-  🥹💖</div>
+<div>OMGGGG NO WAY YOU SAID YES!! 🥹💖</div>
 <div>Best moment ever ✨</div>
 </div>
 
 <script>
-
-/* create stars */
+/* ——— STARS ——— */
 for(let i=0;i<60;i++){
 let s=document.createElement("div");
 s.className="star";
@@ -187,11 +209,12 @@ s.style.left=Math.random()*100+"%";
 document.body.appendChild(s);
 }
 
+/* ——— SLIDESHOW ——— */
 let slides=document.querySelectorAll(".slide");
 let index=0;
 
+/* ——— TYPEWRITER ——— */
 let text="Amreen san… will you be my Valentine?👉🏽🥺👈🏽 💖";
-
 let letterIndex=0;
 
 function typeLetter(){
@@ -202,6 +225,7 @@ setTimeout(typeLetter,40);
 }
 }
 
+/* ——— START ——— */
 function start(){
 document.getElementById("intro").style.display="none";
 document.getElementById("content").style.display="block";
@@ -209,7 +233,10 @@ document.getElementById("content").style.display="block";
 let music=document.getElementById("music");
 music.volume=0.9;
 music.currentTime=0;
-music.play().catch(()=>{});
+
+music.play().catch(()=>{
+document.body.addEventListener("click",()=>music.play(),{once:true});
+});
 
 typeLetter();
 
@@ -220,6 +247,7 @@ slides[index].classList.add("show");
 },4000);
 }
 
+/* ——— YES ——— */
 function yes(){
 document.getElementById("content").style.display="none";
 document.getElementById("yesScreen").style.display="flex";
@@ -235,16 +263,33 @@ setTimeout(()=>h.remove(),4000);
 }
 }
 
+/* ——— NO CHAOS MODE ——— */
 let noBtn=document.getElementById("noBtn");
 
-function move(){
-noBtn.style.top=Math.random()*80+"%";
-noBtn.style.left=Math.random()*80+"%";
+function chaos(){
+document.body.classList.add("shake");
+document.body.classList.add("flash");
+
+let music=document.getElementById("music");
+music.playbackRate=1.3;
+
+for(let i=0;i<10;i++){
+let clone=noBtn.cloneNode(true);
+clone.style.position="fixed";
+clone.style.top=Math.random()*90+"%";
+clone.style.left=Math.random()*90+"%";
+clone.onclick=chaos;
+document.body.appendChild(clone);
 }
 
-noBtn.addEventListener("touchstart",move);
-noBtn.addEventListener("mouseover",move);
+alert("ERROR 404: She said NO??? 😭💀🔥");
+}
 
+noBtn.addEventListener("click", chaos);
+noBtn.addEventListener("mouseover", ()=>{
+noBtn.style.top=Math.random()*80+"%";
+noBtn.style.left=Math.random()*80+"%";
+});
 </script>
 
 </body>
