@@ -187,14 +187,17 @@ animation:flash 0.3s infinite;
 
 <div id="content">
 
+<!-- ADD AS MANY PHOTOS AS YOU WANT -->
 <img src="photo1.jpg" class="slide show">
 <img src="photo2.jpg" class="slide">
 <img src="photo3.jpg" class="slide">
+<img src="photo4.jpg" class="slide">
+<img src="photo5.jpg" class="slide">
 
 <div id="letter"></div>
 
 <div id="buttons">
-<button id="yesBtn" onclick="yes()">YES 💍</button>
+<button id="yesBtn" onclick="yesStep1()">YES 💍</button>
 <button id="noBtn">No</button>
 </div>
 
@@ -253,7 +256,20 @@ slides[index].classList.add("show");
 },4000);
 }
 
-/* YES */
+/* YES CONFIRMATION STEPS */
+function yesStep1(){
+if(confirm("Are you sure? 🥺")){
+yesStep2();
+}
+}
+
+function yesStep2(){
+if(confirm("Are you SURE sure?? 😳")){
+yes();
+}
+}
+
+/* YES FINAL */
 function yes(){
 /* STOP CHAOS */
 document.body.classList.remove("shake");
@@ -351,4 +367,5 @@ noBtn.style.left=Math.random()*80+"%";
 
 </body>
 </html>
+
 
