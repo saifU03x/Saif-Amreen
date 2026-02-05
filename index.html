@@ -104,17 +104,18 @@ button{
 #yesBtn{background:#ff2d75;color:white;}
 #noBtn{background:white;color:black;position:absolute;}
 
-/* YES SCREEN */
+/* YES SCREEN OVERLAY */
 #yesScreen{
   display:none;
   position:fixed;
-  width:100%;
-  height:100%;
+  inset:0;
   justify-content:center;
   align-items:center;
+  flex-direction:column;
   font-size:42px;
   color:#ff2d75;
-  flex-direction:column;
+  z-index:9999;
+  background:rgba(255,182,193,0.65); /* STRONG PINK OVERLAY */
 }
 
 /* HEARTS */
@@ -161,11 +162,11 @@ button{
   100%{background:black}
 }
 
-/* OVERLAY FOR YES SEQUENCE */
+/* YES CONFIRMATION OVERLAY */
 #overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.7);
+  background:rgba(255,182,193,0.65); /* STRONG PINK */
   display:none;
   justify-content:center;
   align-items:center;
@@ -185,7 +186,7 @@ button{
   font-size:18px;
 }
 
-/* SMALL FIREWORK EMOJI ANIM */
+/* FIREWORKS */
 .firework{
   position:fixed;
   font-size:32px;
@@ -213,7 +214,7 @@ button{
 
 <div id="content">
 
-  <!-- ADD/REMOVE PHOTOS HERE (ensure filenames exist in repo) -->
+  <!-- ADD AS MANY PHOTOS AS YOU WANT -->
   <img src="photo1.jpg" class="slide show">
   <img src="photo2.jpg" class="slide">
   <img src="photo3.jpg" class="slide">
@@ -232,10 +233,7 @@ button{
 
 </div>
 
-<div id="yesScreen">
-  <div>OMGGGG YOU SAID YES!! 🥹💖</div>
-  <div>Best moment ever ✨</div>
-</div>
+<div id="yesScreen"></div>
 
 <!-- YES SEQUENCE OVERLAY -->
 <div id="overlay">
@@ -292,6 +290,20 @@ function start(){
     index=(index+1)%slides.length;
     slides[index].classList.add("show");
   },4500);
+
+  startPetals();
+}
+
+/* PETALS FOREVER */
+function startPetals(){
+  setInterval(()=>{
+    let p=document.createElement("div");
+    p.className="petal";
+    p.innerHTML="🌹";
+    p.style.left=Math.random()*100+"%";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),6000);
+  },400);
 }
 
 /* YES MULTI-STEP SEQUENCE */
@@ -320,11 +332,9 @@ function showOverlayStep(){
 overlayYes.onclick=function(){
   yesStep++;
   if(yesStep<=2){
-    // next confirmation step with a tiny delay
     overlay.style.display="none";
     setTimeout(showOverlayStep,600);
   }else{
-    // proceed to final YES flow
     overlay.style.display="none";
     startYesFinal();
   }
@@ -334,9 +344,8 @@ overlayNo.onclick=function(){
   overlay.style.display="none";
 };
 
-/* FINAL YES FLOW WITH DELAYS & WOW */
+/* FINAL YES FLOW */
 function startYesFinal(){
-  // stop chaos if it was active
   document.body.classList.remove("shake");
   document.body.classList.remove("flash");
   document.querySelectorAll(".no-clone").forEach(btn=>btn.remove());
@@ -345,22 +354,16 @@ function startYesFinal(){
   let music=document.getElementById("music");
   music.playbackRate=1.0;
 
-  // small dramatic pause
-  setTimeout(()=>{
-    // petals start
-    for(let i=0;i<35;i++){
-      let p=document.createElement("div");
-      p.className="petal";
-      p.innerHTML="🌹";
-      p.style.left=Math.random()*100+"%";
-      document.body.appendChild(p);
-      setTimeout(()=>p.remove(),6000);
-    }
-  },400);
+  document.getElementById("buttons").style.display="none";
+  document.getElementById("letter").style.display="none";
 
-  // hearts a bit later
   setTimeout(()=>{
-    for(let i=0;i<45;i++){
+    document.getElementById("yesScreen").style.display="flex";
+    document.getElementById("yesScreen").innerHTML="<div>Okay… here we go… 💗</div>";
+  },500);
+
+  setTimeout(()=>{
+    for(let i=0;i<40;i++){
       let h=document.createElement("div");
       h.className="heart";
       h.innerHTML="💖";
@@ -369,9 +372,8 @@ function startYesFinal(){
       document.body.appendChild(h);
       setTimeout(()=>h.remove(),4000);
     }
-  },1200);
+  },1500);
 
-  // fireworks later again
   setTimeout(()=>{
     for(let i=0;i<10;i++){
       let fw=document.createElement("div");
@@ -382,16 +384,15 @@ function startYesFinal(){
       document.body.appendChild(fw);
       setTimeout(()=>fw.remove(),3000);
     }
-  },2000);
+  },2500);
 
-  // finally fade to YES screen
   setTimeout(()=>{
-    document.getElementById("content").style.display="none";
-    document.getElementById("yesScreen").style.display="flex";
-  },3000);
+    document.getElementById("yesScreen").innerHTML=
+      "<div>OMGGGG YOU SAID YES!! 🥹💖</div><div>Best moment ever ✨</div>";
+  },3500);
 }
 
-/* CHAOS MODE FOR NO */
+/* CHAOS MODE */
 let noBtn=document.getElementById("noBtn");
 
 function chaos(){
@@ -401,7 +402,6 @@ function chaos(){
   let music=document.getElementById("music");
   music.playbackRate=1.4;
 
-  // warning text
   let warn=document.createElement("div");
   warn.innerHTML="⚠ SYSTEM FAILURE: SHE SAID NO ⚠";
   warn.style.position="fixed";
@@ -415,7 +415,6 @@ function chaos(){
   document.body.appendChild(warn);
   setTimeout(()=>warn.remove(),2000);
 
-  // clones
   for(let i=0;i<15;i++){
     let clone=noBtn.cloneNode(true);
     clone.classList.add("no-clone");
@@ -427,7 +426,6 @@ function chaos(){
     document.body.appendChild(clone);
   }
 
-  // exploding emojis
   for(let i=0;i<25;i++){
     let boom=document.createElement("div");
     boom.classList.add("chaos-emoji");
@@ -452,348 +450,5 @@ noBtn.addEventListener("mouseover", ()=>{
 </body>
 </html>
 
-opacity:0.25;
-z-index:-2;
-}
-
-@keyframes bgmove{
-0%{transform:translate(-20%,-20%)}
-50%{transform:translate(-30%,-40%)}
-100%{transform:translate(-20%,-20%)}
-}
-
-/* STARS */
-.star{
-position:fixed;
-width:2px;
-height:2px;
-background:white;
-opacity:0.6;
-animation:twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle{
-from{opacity:0.2}
-to{opacity:0.9}
-}
-
-/* INTRO */
-#intro{
-position:fixed;
-width:100%;
-height:100%;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-background:black;
-z-index:10;
-}
-
-button{
-padding:15px 28px;
-font-size:18px;
-border:none;
-border-radius:14px;
-cursor:pointer;
-}
-
-/* SLIDESHOW */
-.slide{
-position:fixed;
-width:65%;
-max-width:420px;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-opacity:0;
-transition:opacity 2s;
-border-radius:20px;
-box-shadow:0 0 40px rgba(255,45,117,0.5);
-}
-
-.show{
-opacity:0.7;
-}
-
-/* LETTER */
-#letter{
-position:absolute;
-top:12%;
-width:100%;
-font-size:28px;
-padding:0 20px;
-text-shadow:0 0 15px black;
-min-height:120px;
-}
-
-/* BUTTONS */
-#buttons{
-position:absolute;
-bottom:15%;
-width:100%;
-}
-
-#yesBtn{background:#ff2d75;color:white;}
-#noBtn{background:white;color:black;position:absolute;}
-
-/* YES SCREEN */
-#yesScreen{
-display:none;
-position:fixed;
-width:100%;
-height:100%;
-justify-content:center;
-align-items:center;
-font-size:42px;
-color:#ff2d75;
-flex-direction:column;
-}
-
-/* HEARTS */
-.heart{
-position:fixed;
-color:#ff2d75;
-font-size:20px;
-animation:floatUp 4s linear forwards;
-}
-
-@keyframes floatUp{
-from{transform:translateY(0);opacity:1}
-to{transform:translateY(-600px);opacity:0}
-}
-
-/* ROSE PETALS */
-.petal{
-position:fixed;
-top:-10px;
-font-size:20px;
-animation:fall 5s linear forwards;
-}
-
-@keyframes fall{
-from{transform:translateY(0) rotate(0deg);opacity:1}
-to{transform:translateY(120vh) rotate(360deg);opacity:0}
-}
-
-/* CHAOS MODE */
-.shake{
-animation:shake 0.2s infinite;
-}
-
-@keyframes shake{
-0%{transform:translate(0,0)}
-25%{transform:translate(5px,-5px)}
-50%{transform:translate(-5px,5px)}
-75%{transform:translate(5px,5px)}
-100%{transform:translate(-5px,-5px)}
-}
-
-.flash{
-animation:flash 0.3s infinite;
-}
-
-@keyframes flash{
-0%{background:black}
-50%{background:red}
-100%{background:black}
-}
-</style>
-</head>
-
-<body>
-
-<div id="intro">
-<h1>Saif ❤️ Amreen</h1>
-<p>Tap to begin our little story…</p>
-<button onclick="start()">✨ Start ✨</button>
-</div>
-
-<audio id="music" playsinline loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<div id="content">
-
-<!-- ADD AS MANY PHOTOS AS YOU WANT -->
-<img src="photo1.jpg" class="slide show">
-<img src="photo2.jpg" class="slide">
-<img src="photo3.jpg" class="slide">
-<img src="photo4.jpg" class="slide">
-<img src="photo5.jpg" class="slide">
-
-<div id="letter"></div>
-
-<div id="buttons">
-<button id="yesBtn" onclick="yesStep1()">YES 💍</button>
-<button id="noBtn">No</button>
-</div>
-
-</div>
-
-<div id="yesScreen">
-<div>OMGGGG YOU SAID YES!! 🥹💖</div>
-<div>Best moment ever ✨</div>
-</div>
-
-<script>
-/* STARS */
-for(let i=0;i<60;i++){
-let s=document.createElement("div");
-s.className="star";
-s.style.top=Math.random()*100+"%";
-s.style.left=Math.random()*100+"%";
-document.body.appendChild(s);
-}
-
-/* SLIDESHOW */
-let slides=document.querySelectorAll(".slide");
-let index=0;
-
-/* TYPEWRITER */
-let text="Amreen san… will you be my Valentine? 👉🏽🥺👈🏽 💖";
-let letterIndex=0;
-
-function typeLetter(){
-if(letterIndex<text.length){
-document.getElementById("letter").innerHTML+=text.charAt(letterIndex);
-letterIndex++;
-setTimeout(typeLetter,40);
-}
-}
-
-/* START */
-function start(){
-document.getElementById("intro").style.display="none";
-document.getElementById("content").style.display="block";
-
-let music=document.getElementById("music");
-music.volume=0.9;
-music.currentTime=0;
-
-music.play().catch(()=>{
-document.body.addEventListener("click",()=>music.play(),{once:true});
-});
-
-typeLetter();
-
-setInterval(()=>{
-slides[index].classList.remove("show");
-index=(index+1)%slides.length;
-slides[index].classList.add("show");
-},4000);
-}
-
-/* YES CONFIRMATION STEPS */
-function yesStep1(){
-if(confirm("Are you sure? 🥺")){
-yesStep2();
-}
-}
-
-function yesStep2(){
-if(confirm("Are you SURE sure?? 😳")){
-yes();
-}
-}
-
-/* YES FINAL */
-function yes(){
-/* STOP CHAOS */
-document.body.classList.remove("shake");
-document.body.classList.remove("flash");
-
-document.querySelectorAll(".no-clone").forEach(btn=>btn.remove());
-document.querySelectorAll(".chaos-emoji").forEach(e=>e.remove());
-
-let music=document.getElementById("music");
-music.playbackRate=1.0;
-
-/* SHOW YES SCREEN */
-document.getElementById("content").style.display="none";
-document.getElementById("yesScreen").style.display="flex";
-
-/* HEARTS */
-for(let i=0;i<40;i++){
-let h=document.createElement("div");
-h.className="heart";
-h.innerHTML="💖";
-h.style.left=Math.random()*100+"%";
-h.style.bottom="0px";
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),4000);
-}
-
-/* ROSE PETALS */
-for(let i=0;i<30;i++){
-let p=document.createElement("div");
-p.className="petal";
-p.innerHTML="🌹";
-p.style.left=Math.random()*100+"%";
-document.body.appendChild(p);
-setTimeout(()=>p.remove(),5000);
-}
-}
-
-/* CHAOS MODE */
-let noBtn=document.getElementById("noBtn");
-
-function chaos(){
-document.body.classList.add("shake");
-document.body.classList.add("flash");
-
-let music=document.getElementById("music");
-music.playbackRate=1.4;
-
-/* WARNING */
-let warn=document.createElement("div");
-warn.innerHTML="⚠ SYSTEM FAILURE: SHE SAID NO ⚠";
-warn.style.position="fixed";
-warn.style.top="40%";
-warn.style.left="50%";
-warn.style.transform="translate(-50%,-50%)";
-warn.style.fontSize="40px";
-warn.style.color="red";
-warn.style.textShadow="0 0 20px yellow";
-warn.style.zIndex="9999";
-document.body.appendChild(warn);
-setTimeout(()=>warn.remove(),2000);
-
-/* CLONES */
-for(let i=0;i<15;i++){
-let clone=noBtn.cloneNode(true);
-clone.classList.add("no-clone");
-clone.innerHTML="NO!!!";
-clone.style.position="fixed";
-clone.style.top=Math.random()*90+"%";
-clone.style.left=Math.random()*90+"%";
-clone.onclick=chaos;
-document.body.appendChild(clone);
-}
-
-/* EXPLODING EMOJIS */
-for(let i=0;i<25;i++){
-let boom=document.createElement("div");
-boom.classList.add("chaos-emoji");
-boom.innerHTML=["💥","🔥","💀","😱"][Math.floor(Math.random()*4)];
-boom.style.position="fixed";
-boom.style.left=Math.random()*100+"%";
-boom.style.top=Math.random()*100+"%";
-boom.style.fontSize="30px";
-boom.style.animation="floatUp 2s linear forwards";
-document.body.appendChild(boom);
-setTimeout(()=>boom.remove(),2000);
-}
-}
-
-noBtn.addEventListener("click", chaos);
-noBtn.addEventListener("mouseover", ()=>{
-noBtn.style.top=Math.random()*80+"%";
-noBtn.style.left=Math.random()*80+"%";
-});
-</script>
-
-</body>
-</html>
 
 
