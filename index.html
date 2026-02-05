@@ -1,5 +1,35 @@
 <!DOCTYPE html>
 <html>
+  function start(){
+
+document.getElementById("intro").style.display="none";
+document.getElementById("content").style.display="block";
+
+let music=document.getElementById("music");
+
+music.volume=1;
+music.muted=false;
+
+let playPromise=music.play();
+
+if(playPromise!==undefined){
+playPromise.then(()=>{})
+.catch(()=>{
+document.body.addEventListener("click",()=>{
+music.play();
+},{once:true});
+});
+}
+
+typeLetter();
+
+setInterval(()=>{
+slides[index].classList.remove("show");
+index=(index+1)%slides.length;
+slides[index].classList.add("show");
+},4000);
+
+}
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
