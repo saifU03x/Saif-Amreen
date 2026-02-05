@@ -270,9 +270,10 @@ let slides=document.querySelectorAll(".slide");
 let index=0;
 
 /* TYPEWRITER */
-let text="Amreen Rahman… will you be my Valentine for the rest of my life? 👉🏽🥺👈🏽 💖";
+let text="<div><span class='pink-gradient'>Amreen Rahman… will you be my Valentine for the rest of my life? 👉🏽🥺👈🏽 💖";
 let letterIndex=0;
 
+  
 function typeLetter(){
   if(letterIndex<text.length){
     document.getElementById("letter").innerHTML+=text.charAt(letterIndex);
@@ -399,7 +400,7 @@ function startYesFinal(){
 
  setTimeout(()=>{
   document.getElementById("yesScreen").innerHTML =
-    "<div><span class='gold-gradient'>OMGGGG NO WAY YOU ACTUALLY SAY YES, THANK YOU!!!! 🥹💖</span></div><div>Liwerly the Bestest moment ever ✨</div>";
+    "<div><span class='gold-gradient'>OMGGGG NO WAY YOU ACTUALLY SAY YES, THANK YOU!!!! </span></div><div>Liwerly the Bestest moment ever 🥹💖🥰✨</div>";
 },3500);
 
 
