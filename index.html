@@ -204,7 +204,7 @@ button{
 
 <div id="intro">
   <h1>Saif ❤️ Amreen</h1>
-  <p>Tap to begin our little story…</p>
+  <p>Tap to begin, i have somethung to ask…</p>
   <button onclick="start()">✨ Start ✨</button>
 </div>
 
@@ -235,7 +235,7 @@ button{
 
   <div id="buttons">
     <button id="yesBtn" onclick="yesSequence()">YES 💍</button>
-    <button id="noBtn">No</button>
+    <button id="noBtn">No😒</button>
   </div>
 
 </div>
@@ -266,7 +266,7 @@ let slides=document.querySelectorAll(".slide");
 let index=0;
 
 /* TYPEWRITER */
-let text="Amreen san… will you be my Valentine? 👉🏽🥺👈🏽 💖";
+let text="Amreen Rahman… will you be my Valentine? 👉🏽🥺👈🏽 💖";
 let letterIndex=0;
 
 function typeLetter(){
@@ -306,7 +306,7 @@ function startPetals(){
   setInterval(()=>{
     let p=document.createElement("div");
     p.className="petal";
-    p.innerHTML="🌹";
+    p.innerHTML="🌸";
     p.style.left=Math.random()*100+"%";
     document.body.appendChild(p);
     setTimeout(()=>p.remove(),6000);
@@ -328,11 +328,11 @@ function yesSequence(){
 function showOverlayStep(){
   overlay.style.display="flex";
   if(yesStep===0){
-    overlayText.innerHTML="Are you sure? 🥺";
+    overlayText.innerHTML="WAIT,Are you sure? 🥺";
   }else if(yesStep===1){
     overlayText.innerHTML="Are you SURE sure?? 😳";
   }else if(yesStep===2){
-    overlayText.innerHTML="Last chance… are you REALLY sure? 💗";
+    overlayText.innerHTML="Last chance… you promise you are REALLY sure? 💗";
   }
 }
 
@@ -395,7 +395,7 @@ function startYesFinal(){
 
   setTimeout(()=>{
     document.getElementById("yesScreen").innerHTML=
-      "<div>OMGGGG NO WAY YOU ACTUALLY SAY YES!!!! 🥹💖</div><div>Liwerly the Bestest moment ever ✨</div>";
+      "<div>OMGGGG NO WAY YOU ACTUALLY SAY YES, THANK YOU!!!! 🥹💖</div><div>Liwerly the Bestest moment ever ✨</div>";
   },3500);
 }
 
