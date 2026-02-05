@@ -1,90 +1,84 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Amreen ❤️</title>
+<title>My Amreen ❤️</title>
 
 <style>
 body {
   margin:0;
-  font-family: Arial, sans-serif;
-  overflow:hidden;
   background:black;
   color:white;
+  font-family:Arial, sans-serif;
   text-align:center;
+  overflow:hidden;
 }
 
 #intro {
   position:fixed;
+  top:0; left:0;
   width:100%;
   height:100%;
   background:black;
   display:flex;
   justify-content:center;
   align-items:center;
-  font-size:28px;
-  letter-spacing:2px;
+  flex-direction:column;
   z-index:10;
-  animation: fadeOut 4s forwards;
-}
-
-@keyframes fadeOut {
-  0% {opacity:1;}
-  80% {opacity:1;}
-  100% {opacity:0; visibility:hidden;}
-}
-
-.container {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-}
-
-h1 {
-  font-size:32px;
-  margin-bottom:20px;
-}
-
-.gallery img {
-  width:200px;
-  border-radius:15px;
-  margin:10px;
-  box-shadow:0 0 20px rgba(255,255,255,0.3);
 }
 
 button {
   padding:15px 25px;
   font-size:18px;
-  margin:10px;
   border:none;
-  border-radius:12px;
+  border-radius:10px;
   cursor:pointer;
 }
 
-#yesBtn {
-  background:#ff4d6d;
-  color:white;
-}
+#yesBtn { background:#ff2d75; color:white; }
+#noBtn { background:white; color:black; position:absolute; }
 
-#noBtn {
-  background:#555;
-  color:white;
-  position:absolute;
-}
+#content { display:none; }
 
-.heart {
+.slide {
   position:fixed;
-  color:red;
-  animation: float 4s linear forwards;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 2s;
 }
 
-@keyframes float {
-  from {transform:translateY(0); opacity:1;}
-  to {transform:translateY(-600px); opacity:0;}
+.show { opacity:0.5; }
+
+#question {
+  position:absolute;
+  top:40%;
+  width:100%;
+  font-size:32px;
+  z-index:5;
+}
+
+#buttons {
+  position:absolute;
+  top:55%;
+  width:100%;
+  z-index:5;
+}
+
+#yesScreen {
+  display:none;
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:black;
+  justify-content:center;
+  align-items:center;
+  font-size:40px;
+  color:#ff2d75;
 }
 </style>
 </head>
@@ -92,73 +86,67 @@ button {
 <body>
 
 <div id="intro">
-  A little surprise for Amreen ❤️
+<h1>For My Amreen ❤️</h1>
+<button onclick="startExperience()">✨ Begin Our Story ✨</button>
 </div>
 
-<audio autoplay loop>
-  <source src="music.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop>
+<source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<div class="container">
-  <h1 id="question">Amreen… will you be my Valentine? 👉🏽🥺👈🏽💖</h1>
+<div id="content">
 
-  <div class="gallery">
-    <img src="photo1.jpg">
-    <img src="photo2.jpg">
-    <img src="photo3.jpg">
-  </div>
+<img src="photo1.jpg" class="slide show">
+<img src="photo2.jpg" class="slide">
+<img src="photo3.jpg" class="slide">
 
-  <button id="yesBtn">Yes 😏</button>
-  <button id="noBtn">No 😢</button>
+<div id="question">
+Amreen… will you be my Valentine?    👉🏽🥺👈🏽💖
+</div>
+
+<div id="buttons">
+<button id="yesBtn" onclick="sayYes()">YES 💍</button>
+<button id="noBtn">No</button>
+</div>
+
+</div>
+
+<div id="yesScreen">
+OMGGGG NO WAY YOU SAY YESSSS 🥹💖✨
 </div>
 
 <script>
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const question = document.getElementById("question");
+let slides = document.querySelectorAll(".slide");
+let index = 0;
 
-let noClicks = 0;
+function startExperience(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("content").style.display="block";
 
-function moveNo() {
-  const x = Math.random()*300-150;
-  const y = Math.random()*300-150;
-  noBtn.style.transform = `translate(${x}px,${y}px)`;
+  const music = document.getElementById("bgMusic");
+  music.volume = 0.7;
+  music.play();
+
+  setInterval(()=>{
+    slides[index].classList.remove("show");
+    index=(index+1)%slides.length;
+    slides[index].classList.add("show");
+  },4000);
 }
 
-noBtn.addEventListener("mouseover", moveNo);
+function sayYes(){
+  document.getElementById("content").style.display="none";
+  document.getElementById("yesScreen").style.display="flex";
+}
 
-noBtn.addEventListener("click", ()=>{
-  noClicks++;
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("touchstart",moveButton);
+noBtn.addEventListener("mouseover",moveButton);
 
-  const messages = [
-    "Hmm… that didn't work 😂",
-    "Nice try my love 👀",
-    "I say press YES 😌",
-    "You can't escape destiny 😭",
-    "Okay now you're pushing your luck buddy 😤❤️"
-  ];
-
-  question.innerText = messages[noClicks % messages.length];
-
-  for(let i=0;i<15;i++){
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerText="❤️";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.top="80vh";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),4000);
-  }
-});
-
-yesBtn.addEventListener("click", ()=>{
-  document.body.innerHTML=`
-  <div style="display:flex;flex-direction:column;justify-content:center;
-  align-items:center;height:100vh;background:black;color:white;">
-  <h1 style="font-size:40px;"> OMG NO WAY, YOU ACTUALLY SAID YES 😭❤️</h1>
-  <p style="font-size:22px;">Amreen, you just made me the happiest person alive 🥰</p>
-  </div>`;
-});
+function moveButton(){
+  noBtn.style.top=Math.random()*80+"%";
+  noBtn.style.left=Math.random()*80+"%";
+}
 </script>
 
 </body>
